@@ -1,0 +1,33 @@
+
+
+.calendar {
+  position: relative;
+  box-sizing: border-box;
+  width: 250px;
+  height: 225px;
+  border: 1px solid black;
+  padding: 15px 25px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .body {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+      .date {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 25px;
+      }
+
+      .curMonth:hover { border-radius: 13px; border : 1px solid grey; cursor: pointer;}
+      .otherMonth {color: darkgrey; opacity: .5}
+      .sun { color: red; }
+    }
+}
