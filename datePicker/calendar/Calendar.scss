@@ -24,10 +24,26 @@
         justify-content: center;
         width: 25px;
         height: 25px;
+        user-select: none;
+      }
+
+      .month {
+        width: 45px;
+        height: 45px;
+      }
+
+      .year {
+        width: 40px;
+        height: 30px;
       }
 
       .curMonth:hover { border-radius: 13px; border : 1px solid grey; cursor: pointer;}
       .otherMonth {color: darkgrey; opacity: .5}
       .sun { color: red; }
+
+      .month:hover {
+        border-radius: 22.5px;
+        border : 1px solid grey; cursor: pointer;
+      }
     }
 }
