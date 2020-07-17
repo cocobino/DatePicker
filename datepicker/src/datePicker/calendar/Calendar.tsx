@@ -27,12 +27,13 @@ const Calendar = observer(() => {
             <div className={cx('header')}>
                 <button type="button" onClick={setPrev}>&lt;</button>
                 <span>
+                    {DatePickerVM.getDatePickerMode !== DatePickerMode.year ?
                     <button type="button" data-type={'year'} onClick={setDatePickerMode}>
-                        {DatePickerVM.getDatePickerMode === DatePickerMode.year ? DatePickerVM.getYearModeHeader: DatePickerVM.getDate.getFullYear()}년
+                        { DatePickerVM.getDate.getFullYear()}년
                     </button>
-                    <button type="button" data-type={'month'} onClick={setDatePickerMode}>
-                        {DatePickerVM.getDatePickerMode === DatePickerMode.date ? (DatePickerVM.getDate.getMonth()+1)+'월' : ''}
-                    </button>
+                    : DatePickerVM.getYearHeader
+                    }
+                        {DatePickerVM.getDatePickerMode === DatePickerMode.date ? (<button type="button" data-type={'month'} onClick={setDatePickerMode}> {DatePickerVM.getDate.getMonth()+1}월 </button>) : ''}
                 </span>
                 <button type="button" onClick={setNext}>&gt;</button>
             </div>

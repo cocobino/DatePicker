@@ -1,18 +1,15 @@
 import DateModel, {DatePickerMode} from "./dateModel/DateModel";
+import {observable} from 'mobx';
 
 interface ICalendarData {
     type : string;
     value : string|number;
 }
 
-interface IYear {
-    cury:number;
-    yset:number;
-}
-
 class DatePickerVM {
     private _calrendar:Array<ICalendarData> =[];
-    private yset:IYear = {cury:0, yset:20};
+    private yset:number = 20;
+    @observable private cury:number =0; //year만 그림
 
     constructor(format:string) {
         this._drawDateMode();
@@ -23,7 +20,7 @@ class DatePickerVM {
         const _setDate = new Date(DateModel.getDate.getFullYear(), DateModel.getDate.getMonth(), 1);
         const y =[31,_setDate.getFullYear() % 4 === 0 ? 28 : 29,31,30,31,30,31,31,30,31,30,31];
         let cnt=1, week=0;
-        for(let i=0; i<42; i++,i%7==0 ? week++ : week) this._calrendar.push((week===0 && i < _setDate.getDay() || cnt > y[_setDate.getMonth()]) ? {type: 'otherMonth', value: ''} : {type: 'curMonth', value: cnt++});
+        for(let i=0; i<42; i++,i%7===0 ? week++ : week) this._calrendar.push(((week===0 && i < _setDate.getDay()) || cnt > y[_setDate.getMonth()]) ? {type: 'otherMonth', value: ''} : {type: 'curMonth', value: cnt++});
     }
 
     private _drawMonthMode() {
@@ -31,14 +28,15 @@ class DatePickerVM {
         for(let i=0; i<12; i++) this._calrendar.push({type:'month', value:(i+1)+'월'});
     }
 
-    private  _drawYearMode() {
-        this._calrendar = []; const ymod = DateModel.getDate.getFullYear()%this.yset.yset;
-        this.yset.cury = ymod === 0 ? DateModel.getDate.getFullYear()/this.yset.yset : (DateModel.getDate.getFullYear()/this.yset.yset)+1;
-        for(let y=this.yset.cury*this.yset.yset; y<(this.yset.cury+1)*this.yset.yset; y++) this._calrendar.push({type:'year', value:y+1});
+    private _drawYearMode() {
+        this._calrendar = []; const ymod = DateModel.getDate.getFullYear()%this.yset;
+        this.cury = ymod === 0 ? DateModel.getDate.getFullYear()/this.yset : (DateModel.getDate.getFullYear()/this.yset)+1;
+        for(let y=this.cury*this.yset; y<(this.cury+1)*this.yset; y++) this._calrendar.push({type:'year', value:y+1});
     }
 
-    get  getYearModeHeader() {
-        return `${this.yset.cury*this.yset.yset}-${(this.yset.cury+1)*this.yset.yset}`;
+    get getYearHeader() {
+        debugger;
+        return `${this.cury*this.yset}~${(this.cury+1)*this.yset}`;
     }
 
     setDatePickerMode(mode:string) {
@@ -59,7 +57,8 @@ class DatePickerVM {
         } else if(DateModel.getDatePickerMode === DatePickerMode.month) {
             DateModel.setDate(`${(DateModel.getDate.getFullYear()-1)}-${DateModel.getDate.getMonth()+1}`);
         } else if(DateModel.getDatePickerMode === DatePickerMode.year) {
-            DateModel.setDate(`${(this.yset.cury*this.yset.yset)-this.yset.yset}-${DateModel.getDate.getMonth()+1}`);
+            DateModel.setDate(`${(this.cury*this.yset)-this.yset}-${DateModel.getDate.getMonth()+1}`);
+            this.cury-=1;
             this._drawYearMode();
         }
     }
@@ -71,7 +70,8 @@ class DatePickerVM {
         } else if(DateModel.getDatePickerMode === DatePickerMode.month) {
             DateModel.setDate(`${(DateModel.getDate.getFullYear()+1)}-${DateModel.getDate.getMonth()+1}`);
         } else if(DateModel.getDatePickerMode === DatePickerMode.year) {
-            DateModel.setDate(`${(this.yset.cury*this.yset.yset)+this.yset.yset}-${DateModel.getDate.getMonth()+1}`);
+            DateModel.setDate(`${(this.cury*this.yset)+this.yset}-${DateModel.getDate.getMonth()+1}`);
+            this.cury+=1;
             this._drawYearMode();
         }
     }

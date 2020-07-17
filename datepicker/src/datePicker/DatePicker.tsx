@@ -1,12 +1,15 @@
 import React from 'react';
 import {observer} from "mobx-react";
 
-import classNames from 'classnames/bind';
 import css from './DatePicker.scss';
-const cx = classNames.bind(css);
+import classNames from 'classnames/bind';
+
 
 import Calendar from './calendar/Calendar';
 import DatePickerVM from "./DatePickerVM";
+
+const cx = classNames.bind(css);
+
 
 const DatePicker = observer((props:any) => {
     const onChange = () =>  {
